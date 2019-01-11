@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "*.gyp": "python",
+    ".compilerc": "json",
+    "colorquant.h": "c",
+    "pix.h": "c",
+    "heap.h": "c"
+  }
+}
