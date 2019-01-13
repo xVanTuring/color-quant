@@ -34,11 +34,8 @@ build:
   parallel: true
 before_test:
 - cmd: cd test
-- ps: pwd
-- ps: tree
 test_script:
 - cmd: |-
-      cd
       .\Release\TestQC.exe
 cache: 
   - build
