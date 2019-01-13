@@ -21,16 +21,18 @@ init:
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
 - echo %generator%
 before_build:
+- ps: Add-Content .\CMakeLists.txt "add_subdirectory(test)"
 - cmd: |-
       cd build
       cmake --version
       cmake .. -G %generator%
+      
 build: 
   project: c:\projects\color-quant\build\QuantColor.sln
   parallel: true
-
+before_test:
+- cmd: cd test
 test_script:
 - cmd: |-
       cd
-      # cd test
       .\Release\TestQC.exe
