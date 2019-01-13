@@ -41,5 +41,5 @@ test_script:
       cd
       .\Release\TestQC.exe
 cache: 
-  - build -> appveyor.yml
-  - js\node_modules -> appveyor.yml
+  - build
+  - js\node_modules -> js\package.json
