@@ -10,7 +10,8 @@ environment:
   - arch: Win64
 matrix:
   fast_finish: true
-install: 
+install:
+    - ps: Install-Product node 10.14.2 x64
     - ps: node --version
     - ps: git submodule -q update --init heap
 init:
