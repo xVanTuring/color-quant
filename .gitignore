@@ -1,4 +1,5 @@
-build
+build/*
+!build/.gitkeep
 js/node_modules
 js/*.rgb
 .vs

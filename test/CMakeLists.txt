@@ -1,3 +1,8 @@
+message("installing node deps")
+execute_process(COMMAND powershell -c "npm install"
+WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/js
+)
+
 message("Generating Binary Test file")
 execute_process(COMMAND powershell -c "node index.js"
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/js
