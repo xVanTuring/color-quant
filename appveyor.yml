@@ -1,0 +1,41 @@
+# environment:
+#     access_token:
+#         secure: # 自己的加密token
+clone_folder: c:\projects\color-quant
+image:
+- Visual Studio 2017
+configuration:
+- Release
+- Debug
+platform:
+- x64
+environment:
+  matrix:
+  - arch: Win64
+  # - arch: #does not work, Release|x64 not a valid target
+matrix:
+  fast_finish: true
+install: 
+    - ps: Install-Product node 11.14
+    - node: --vrsion
+init:
+- set arch=
+- if "%arch%"=="Win64" ( set arch= Win64)
+- echo %arch%
+- echo %APPVEYOR_BUILD_WORKER_IMAGE%
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
+- echo %generator%
+before_build:
+- cmd: |-
+      cd build
+      cmake --version
+      cmake .. -G %generator%
+build: 
+  project: c:\projects\color-quant\QuantColor.sln
+  parallel: true
+
+test_script:
+- ps: |-
+  cd test
+  .\Debug\TestQC.exe
+  .\Release\TestQC.exe
