@@ -1,7 +1,7 @@
 #include "vbox.h"
 #include <stdlib.h>
 
-BOX3D* box_3d_create(const int r1, const int r2, const int g1, const int g2, const int b1, const int b2) {
+BOX3D* box_3d_create(int r1, int r2, int g1, int g2, int b1, int b2) {
 	BOX3D* vbox = malloc(sizeof(BOX3D));
 	vbox->r1 = r1;
 	vbox->r2 = r2;
@@ -14,14 +14,14 @@ BOX3D* box_3d_create(const int r1, const int r2, const int g1, const int g2, con
 
 BOX3D* box_3d_copy(BOX3D* vbox) {
 	BOX3D* vbox_clone = box_3d_create(vbox->r1, vbox->r2,
-	                                  vbox->g1, vbox->g2,
-	                                  vbox->b1, vbox->b2);
+		vbox->g1, vbox->g2,
+		vbox->b1, vbox->b2);
 	vbox_clone->n_pix = vbox->n_pix;
 	vbox_clone->vol = vbox->vol;
 	return vbox_clone;
 }
 
-int vbox_get_count(BOX3D* vbox, const int* histo, const int sigbits) {
+int vbox_get_count(BOX3D* vbox, int* histo, int sigbits) {
 	int n_pix = 0;
 	for (int r = vbox->r1; r <= vbox->r2; ++r) {
 		for (int g = vbox->g1; g <= vbox->g2; ++g) {

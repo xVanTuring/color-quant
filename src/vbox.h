@@ -22,7 +22,7 @@ extern BOX3D* box_3d_create(int r1, int r2, int g1,
 
 extern BOX3D* box_3d_copy(BOX3D* vbox);
 
-extern int vbox_get_count(BOX3D* vbox, const int* histo, int sigbits);
+extern int vbox_get_count(BOX3D* vbox, int* histo, int sigbits);
 
 extern int vbox_get_volume(BOX3D* vbox);
 extern void vbox_get_average_color(BOX3D* vbox, int* histo,

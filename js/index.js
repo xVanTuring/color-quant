@@ -1,10 +1,23 @@
 const sharp = require('sharp')
+// const path = require('path')
 const fs = require('fs')
-sharp('./adventure-animal-clouds-1557650.jpg')
-  .resize(1024)
-  .raw()
-  .toBuffer((err, buffer) => {
-    fs.writeFile('./data.rgb', buffer, () => {
-      console.log('Done!')
+sharp("image.png")
+    .raw()
+    .toBuffer((err, buffer) => {
+        fs.writeFile(`data.4.rgb`, buffer, () => {
+        })
     })
-  })
+sharp("image.png")
+    .removeAlpha()
+    .raw()
+    .toBuffer((err, buffer) => {
+        fs.writeFile(`data.3.rgb`, buffer, () => {
+        })
+    })
+sharp("image.jpg")
+    .resize(1920, 1080)
+    .raw()
+    .toBuffer((err, buffer) => {
+        fs.writeFile(`small.3.rgb`, buffer, () => {
+        })
+    })

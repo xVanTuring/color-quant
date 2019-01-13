@@ -19,17 +19,18 @@ struct RGB_Quad {
 
 typedef struct RGB_Quad RGB_QUAD;
 
-struct Pix32 {
-	RGBA_QUAD* pixs;
+//struct Pix32 {
+//	RGBA_QUAD* pixs;
+//	int n;
+//};
+struct Pix {
+	void* pixs;
 	int n;
-};
-struct Pix24 {
-	RGB_QUAD* pixs;
-	int n;
+	int depth;
 };
 
-typedef struct Pix32 PIX32;
-typedef struct Pix24 PIX24;
+//typedef struct Pix32 PIX32;
+typedef struct Pix PIX;
 
 struct PixColormap {
 	void* array; // RGB_QUAD

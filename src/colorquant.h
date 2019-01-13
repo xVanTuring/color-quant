@@ -10,21 +10,19 @@
 extern "C" {
 #endif
 
-extern int* pix_median_cut_histo(PIX32* pix, const int sigbits, int sub_sample);
-extern int* pix_median_cut_histo24(PIX24* pix, const int sigbits, int sub_sample);
+	extern int* pix_median_cut_histo(PIX* pix, int sigbits, int sub_sample);
 
-extern void get_color_index(RGBA_QUAD* pix, int rshift, int sigbits, int* index);
-extern void get_color_index24(RGB_QUAD* pix, int rshift, int sigbits, int* index);
-extern BOX3D* pix_get_color_region(PIX32* pix, int sigbits, int sub_sample);
-extern BOX3D* pix_get_color_region24(PIX24* pix, int sigbits, int sub_sample);
+	extern void get_color_index(PIX* pix, int i, int rshift, int sigbits, int* index);
+	extern BOX3D* pix_get_color_region(PIX* pix, int sigbits, int sub_sample);
 
-extern int median_cut_apply(int* histo,
-                            int sigbits,
-                            BOX3D* vbox,
-                            BOX3D** pvbox1,
-                            BOX3D** pvbox2);
-extern PIXCMAP* pix_median_cut_quant24(PIX24* pix, int max_colors, int sigbits, int max_sub, int* count);
-extern PIXCMAP* pix_median_cut_quant(PIX32* pix, int max_colors, int sigbits, int max_sub, int* count);
+	extern int median_cut_apply(int* histo,
+		int sigbits,
+		BOX3D* vbox,
+		BOX3D** pvbox1,
+		BOX3D** pvbox2);
+
+	extern PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub, int* counter);
+	extern PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, int* count);
 #ifdef __cplusplus
 }
 #endif
