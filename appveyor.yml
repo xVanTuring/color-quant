@@ -1,6 +1,3 @@
-# environment:
-#     access_token:
-#         secure: # 自己的加密token
 clone_folder: c:\projects\color-quant
 image:
 - Visual Studio 2017
@@ -16,9 +13,8 @@ environment:
 matrix:
   fast_finish: true
 install: 
-    # - ps: Install-Product node 11.14
-    - node: --version
-    - git: submodule update --init --recursive
+    - ps: node --version
+    - ps: git submodule update --init --recursive
 init:
 - set arch=
 - if "%arch%"=="Win64" ( set arch= Win64)
@@ -27,7 +23,7 @@ init:
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set generator="Visual Studio 15 2017%arch%" )
 - echo %generator%
 before_build:
-- cmd: |-
+- ps: |-
       cd build
       cmake --version
       cmake .. -G %generator%
