@@ -40,3 +40,6 @@ test_script:
 - cmd: |-
       cd
       .\Release\TestQC.exe
+cache: 
+  - build -> appveyor.yml
+  - js\node_modules -> appveyor.yml
