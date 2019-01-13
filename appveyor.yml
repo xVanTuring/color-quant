@@ -17,7 +17,8 @@ matrix:
   fast_finish: true
 install: 
     # - ps: Install-Product node 11.14
-    - node: --vrsion
+    - node: --version
+    - git: submodule update --init --recursive
 init:
 - set arch=
 - if "%arch%"=="Win64" ( set arch= Win64)
