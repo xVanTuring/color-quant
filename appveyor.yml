@@ -3,13 +3,11 @@ image:
 - Visual Studio 2017
 configuration:
 - Release
-- Debug
 platform:
 - x64
 environment:
   matrix:
   - arch: Win64
-  # - arch: #does not work, Release|x64 not a valid target
 matrix:
   fast_finish: true
 install: 
@@ -33,6 +31,6 @@ build:
 
 test_script:
 - cmd: |-
-    cd test
-    .\Debug\TestQC.exe
-    .\Release\TestQC.exe
+      cd
+      # cd test
+      .\Release\TestQC.exe
