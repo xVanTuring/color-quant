@@ -36,6 +36,6 @@ build:
 
 test_script:
 - ps: |-
-  cd test
-  .\Debug\TestQC.exe
-  .\Release\TestQC.exe
+    cd test
+    .\Debug\TestQC.exe
+    .\Release\TestQC.exe
