@@ -22,6 +22,7 @@ init:
 - echo %generator%
 before_build:
 - ps: Add-Content .\CMakeLists.txt "add_subdirectory(test)"
+- ps: cat .\CMakeLists.txt
 - cmd: |-
       cd build
       cmake --version
@@ -32,6 +33,8 @@ build:
   parallel: true
 before_test:
 - cmd: cd test
+- ps: pwd
+- ps: tree
 test_script:
 - cmd: |-
       cd
