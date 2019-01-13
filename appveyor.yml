@@ -31,7 +31,7 @@ before_build:
       cmake --version
       cmake .. -G %generator%
 build: 
-  project: c:\projects\color-quant\QuantColor.sln
+  project: c:\projects\color-quant\build\QuantColor.sln
   parallel: true
 
 test_script:
