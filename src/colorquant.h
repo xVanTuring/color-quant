@@ -21,8 +21,8 @@ extern "C" {
 		BOX3D** pvbox1,
 		BOX3D** pvbox2);
 
-	extern PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub, int* counter);
-	extern PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, int* count);
+	extern PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub, size_t* counter);
+	extern PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, size_t* count);
 #ifdef __cplusplus
 }
 #endif

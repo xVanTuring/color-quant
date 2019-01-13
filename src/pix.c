@@ -24,7 +24,7 @@ int pix_cmap_add_color(PIXCMAP* cmap, int r_val, int g_val, int b_val) {
 }
 
 
-PIXCMAP* pix_cmap_generate_from_median_cuts(HEAP* heap, int* histo, int sigbits, int* count) {
+PIXCMAP* pix_cmap_generate_from_median_cuts(HEAP* heap, int* histo, int sigbits, size_t* count) {
 	int r, g, b;
 	r = g = b = 0;
 	PIXCMAP* cmap = pix_cmap_create(8);
@@ -32,7 +32,6 @@ PIXCMAP* pix_cmap_generate_from_median_cuts(HEAP* heap, int* histo, int sigbits,
 	while (heap_get_count(heap) > 0) {
 		BOX3D* vbox = heap_remove(heap);
 		count[index] = vbox->n_pix;
-		//printf("%d\n", vbox->n_pix);
 		vbox_get_average_color(vbox, histo, sigbits, index, &r, &g, &b);
 		pix_cmap_add_color(cmap, r, g, b);
 		free(vbox);

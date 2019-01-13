@@ -1,6 +1,6 @@
 #include "vbox.h"
 #include <stdlib.h>
-
+#include<stdio.h>
 BOX3D* box_3d_create(int r1, int r2, int g1, int g2, int b1, int b2) {
 	BOX3D* vbox = malloc(sizeof(BOX3D));
 	vbox->r1 = r1;
@@ -21,8 +21,8 @@ BOX3D* box_3d_copy(BOX3D* vbox) {
 	return vbox_clone;
 }
 
-int vbox_get_count(BOX3D* vbox, int* histo, int sigbits) {
-	int n_pix = 0;
+size_t vbox_get_count(BOX3D* vbox, int* histo, int sigbits) {
+	size_t n_pix = 0;
 	for (int r = vbox->r1; r <= vbox->r2; ++r) {
 		for (int g = vbox->g1; g <= vbox->g2; ++g) {
 			for (int b = vbox->b1; b <= vbox->b2; ++b) {
@@ -31,10 +31,11 @@ int vbox_get_count(BOX3D* vbox, int* histo, int sigbits) {
 			}
 		}
 	}
+	//printf("%u\n", n_pix);
 	return n_pix;
 }
 
-int vbox_get_volume(BOX3D* vbox) {
+size_t vbox_get_volume(BOX3D* vbox) {
 	if (!vbox) {
 		return 0;
 	}

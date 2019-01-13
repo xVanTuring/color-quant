@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, int* count) {
+PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, size_t* count) {
 	if (sigbits == 0) {
 		sigbits = DEFAULT_SIG_BITS;
 	}
@@ -23,13 +23,14 @@ PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sig
 			break;
 		}
 		if (vbox1->vol > 1) {
-			vbox1->sort_param = (float)vbox1->n_pix;
+			vbox1->sort_param = vbox1->n_pix;
 		}
 		free(vbox);
 		heap_add(heap, vbox1);
 		if (vbox2) {
-			if (vbox2->vol > 1)
+			if (vbox2->vol > 1) {
 				vbox2->sort_param = vbox2->n_pix;
+			}
 			heap_add(heap, vbox2);
 			n_colors++;
 		}
@@ -59,7 +60,14 @@ PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sig
 			vbox1->sort_param = vbox1->n_pix * vbox1->vol;
 		}
 		free(vbox);
-		heap_add(heap_sec, vbox1);
+		// Todo CHECK:0 n_pix reason
+		if (vbox1->n_pix != 0) {
+			heap_add(heap_sec, vbox1);
+		}
+		else {
+			free(vbox1);
+			n_colors--;
+		}
 		if (vbox2) {
 			if (vbox2->vol > 1) {
 				vbox2->sort_param = vbox2->n_pix * vbox2->vol;
@@ -85,7 +93,7 @@ PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sig
 	free(histo);
 	return cmap;
 }
-PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub, int* counter) {
+PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub, size_t* counter) {
 	if (pix->depth != 3 && pix->depth != 4) {
 		return NULL;
 	}
@@ -117,9 +125,7 @@ int* pix_median_cut_histo(PIX* pix, int sigbits, int sub_sample) {
 	int index;
 	for (int i = 0; i < num; i += sub_sample) {
 		get_color_index(pix, i, rshift, sigbits, &index);
-		if (index != -1) {
-			histo[index]++;
-		}
+		histo[index]++;
 	}
 	return histo;
 }
@@ -127,36 +133,20 @@ void get_color_index(PIX* pix, int i, int rshift, int sigbits, int* index) {
 	int r;
 	int g;
 	int b;
-	int a;
 	if (pix->depth == 3) {
 		RGB_QUAD *pixs = (RGB_QUAD *)pix->pixs;
 		r = pixs[i].red >> rshift;
 		g = pixs[i].green >> rshift;
 		b = pixs[i].blue >> rshift;
-		a = 255;
 	}
 	else {
 		RGBA_QUAD *pixs = (RGBA_QUAD *)pix->pixs;
 		r = pixs[i].red >> rshift;
 		g = pixs[i].green >> rshift;
 		b = pixs[i].blue >> rshift;
-		a = pixs[i].alpha;
 	}
-	if (a > 125) {
-		if (r > 250 && g > 250 && b > 250) {
-			// TODO: p?
-			*index = -1;
-		}
-		else
-		{
-			*index = (r << (2 * sigbits)) + (g << sigbits) + b;
-		}
-	}
-	else
-	{
-		*index = -1;
-	}
-	
+	*index = (r << (2 * sigbits)) + (g << sigbits) + b;
+
 }
 BOX3D* pix_get_color_region(PIX* pix, int sigbits, int sub_sample) {
 
@@ -171,13 +161,12 @@ BOX3D* pix_get_color_region(PIX* pix, int sigbits, int sub_sample) {
 	int g;
 	int b;
 	for (int i = 0; i < num; i += sub_sample) {
-		if (pix->depth==3) {
+		if (pix->depth == 3) {
 			r = ((RGB_QUAD *)pix->pixs)[i].red >> rshift;
 			g = ((RGB_QUAD *)pix->pixs)[i].green >> rshift;
 			b = ((RGB_QUAD *)pix->pixs)[i].blue >> rshift;
 		}
-		else
-		{
+		else {
 			r = ((RGBA_QUAD *)pix->pixs)[i].red >> rshift;
 			g = ((RGBA_QUAD *)pix->pixs)[i].green >> rshift;
 			b = ((RGBA_QUAD *)pix->pixs)[i].blue >> rshift;
@@ -228,7 +217,7 @@ int median_cut_apply(int* histo, int sigbits, BOX3D* vbox, BOX3D** pvbox1, BOX3D
 	maxw = MAX(maxw, bw);
 	int i, j, k, sum, index;
 	int total = 0;
-	int partial_sum[128] = {0};
+	int partial_sum[128] = { 0 };
 	if (maxw == rw) {
 		for (i = vbox->r1; i <= vbox->r2; i++) {
 			sum = 0;
@@ -331,7 +320,6 @@ int median_cut_apply(int* histo, int sigbits, BOX3D* vbox, BOX3D** pvbox1, BOX3D
 	}
 	vbox1->n_pix = vbox_get_count(vbox1, histo, sigbits);
 	vbox2->n_pix = vbox_get_count(vbox2, histo, sigbits);
-
 	vbox1->vol = vbox_get_volume(vbox1);
 	vbox2->vol = vbox_get_volume(vbox2);
 	return 0;

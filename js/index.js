@@ -14,10 +14,3 @@ sharp("image.png")
         fs.writeFile(`data.3.rgb`, buffer, () => {
         })
     })
-sharp("image.jpg")
-    .resize(1920, 1080)
-    .raw()
-    .toBuffer((err, buffer) => {
-        fs.writeFile(`small.3.rgb`, buffer, () => {
-        })
-    })

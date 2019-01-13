@@ -44,7 +44,7 @@ typedef struct PixColormap PIXCMAP;
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern PIXCMAP* pix_cmap_generate_from_median_cuts(HEAP* heap, int* histo, int sigbits, int* count);
+extern PIXCMAP* pix_cmap_generate_from_median_cuts(HEAP* heap, int* histo, int sigbits, size_t* count);
 extern PIXCMAP* pix_cmap_create(int depth);
 extern int pix_cmap_add_color(PIXCMAP* cmap, int r_val, int g_val, int b_val);
 #ifdef __cplusplus
