@@ -112,7 +112,7 @@ PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub
 		sub_sample = pix->n / 1000000.;
 		sub_sample = MAX(1, MIN(max_sub, sub_sample));
 	}
-	printf("%d\n", sub_sample);
+	// printf("%d\n", sub_sample);
 	histo = pix_median_cut_histo(pix, sigbits, sub_sample);
 
 	const int histosize = 1 << (3 * sigbits);
