@@ -9,7 +9,7 @@ int main() {
 	char *filename3 = "data.3.rgb";
 	// on windows if you double click the exe, 
 	// make sure it's next to data.rgb
-	run(filename1, 3);
+	run(filename1, 4);
 	run(filename3, 3);
 	return 0;
 }
@@ -60,10 +60,10 @@ int run(char *filename, int depth) {
 	}
 	RGB_QUAD *colorMapArray = cmap->array;
 	for (int i = 0; i < cmap->n; i++) {
-		printf("rgb(%d, %d, %d) \n",
+		printf("rgb(%d, %d, %d) %d \n",
 			colorMapArray[i].red,
 			colorMapArray[i].green,
-			colorMapArray[i].blue);
+			colorMapArray[i].blue, counter[i]);
 	}
 	free(cmap->array);
 	free(cmap);

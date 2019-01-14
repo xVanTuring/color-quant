@@ -7,8 +7,7 @@ sharp("image.png")
         fs.writeFile(`data.4.rgb`, buffer, () => {
         })
     })
-sharp("image.png")
-    .removeAlpha()
+sharp("image.jpg")
     .raw()
     .toBuffer((err, buffer) => {
         fs.writeFile(`data.3.rgb`, buffer, () => {

@@ -1,5 +1,6 @@
 #include "colorquant.h"
-#include <stdlib.h>
+#include<stdlib.h>
+#include<math.h>
 
 
 PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sigbits, size_t* count) {
@@ -102,9 +103,34 @@ PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub
 	if (max_sub <= 0) {
 		max_sub = 10;
 	}
-	const int sub_sample = max_sub;
-	//TODO: auto calc sub_sample
+	int sub_sample = 1;
+	if (max_sub == 1) {
+		sub_sample = 1;
+	}
+	else {
+		// 1000x1000 reso
+		sub_sample = pix->n / 1000000.;
+		sub_sample = MAX(1, MIN(max_sub, sub_sample));
+	}
+	printf("%d\n", sub_sample);
 	histo = pix_median_cut_histo(pix, sigbits, sub_sample);
+
+	const int histosize = 1 << (3 * sigbits);
+	int smalln = TRUE;
+	int ncolors = 0;
+	for (size_t i = 0; i < histosize; i++) {
+		if (histo[i]) {
+			ncolors++;
+		}
+		if (ncolors > max_colors) {
+			smalln = FALSE;
+			break;
+		}
+	}
+	if (smalln) {
+		return NULL;
+	}
+
 	vbox = pix_get_color_region(pix, sigbits, sub_sample);
 	vbox->n_pix = vbox_get_count(vbox, histo, sigbits);
 	vbox->vol = vbox_get_volume(vbox);
