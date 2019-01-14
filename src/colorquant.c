@@ -61,7 +61,7 @@ PIXCMAP* histo_median_cut_quant(int* histo, BOX3D* vbox, int max_colors, int sig
 			vbox1->sort_param = vbox1->n_pix * vbox1->vol;
 		}
 		free(vbox);
-		// Todo CHECK:0 n_pix reason
+		// Todo: CHECK:0 n_pix reason
 		if (vbox1->n_pix != 0) {
 			heap_add(heap_sec, vbox1);
 		}
@@ -109,7 +109,7 @@ PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub
 	}
 	else {
 		// 1000x1000 reso
-		sub_sample = pix->n / 1000000.;
+		sub_sample = (int)(pix->n / 1000000.);
 		sub_sample = MAX(1, MIN(max_sub, sub_sample));
 	}
 	printf("%d\n", sub_sample);
@@ -118,7 +118,7 @@ PIXCMAP* pix_median_cut_quant(PIX* pix, int max_colors, int sigbits, int max_sub
 	const int histosize = 1 << (3 * sigbits);
 	int smalln = TRUE;
 	int ncolors = 0;
-	for (size_t i = 0; i < histosize; i++) {
+	for (int i = 0; i < histosize; i++) {
 		if (histo[i]) {
 			ncolors++;
 		}

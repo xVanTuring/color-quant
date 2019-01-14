@@ -1,3 +1,4 @@
+#pragma warning(disable:4996)
 #include <stdio.h>
 #include <sys/stat.h>
 #include "colorquant.h"
