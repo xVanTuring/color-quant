@@ -23,17 +23,27 @@ PIXCMAP *histo_median_cut_quant(int *histo, BOX3D *vbox, int max_colors,
     if (!vbox1) {
       break;
     }
-    if (vbox1->vol > 1) {
-      vbox1->sort_param = vbox1->n_pix;
+    if (vbox1->n_pix > 0) {
+      if (vbox1->vol > 1) {
+        vbox1->sort_param = vbox1->n_pix;
+      }
+      heap_add(heap, vbox1);
+    } else {
+      free(vbox1);
+      n_colors--;
     }
     free(vbox);
-    heap_add(heap, vbox1);
+
     if (vbox2) {
-      if (vbox2->vol > 1) {
-        vbox2->sort_param = vbox2->n_pix;
+      if (vbox2->n_pix > 0) {
+        if (vbox2->vol > 1) {
+          vbox2->sort_param = vbox2->n_pix;
+        }
+        heap_add(heap, vbox2);
+        n_colors++;
+      } else {
+        free(vbox2);
       }
-      heap_add(heap, vbox2);
-      n_colors++;
     }
     if (n_colors >= pop_colors)
       break;
@@ -57,23 +67,26 @@ PIXCMAP *histo_median_cut_quant(int *histo, BOX3D *vbox, int max_colors,
     if (!vbox1) {
       break;
     }
-    if (vbox1->vol > 1) {
-      vbox1->sort_param = vbox1->n_pix * vbox1->vol;
-    }
     free(vbox);
-    // Todo: CHECK:0 n_pix reason
-    if (vbox1->n_pix != 0) {
+    if (vbox1->n_pix > 0) {
+      if (vbox1->vol > 1) {
+        vbox1->sort_param = vbox1->n_pix * vbox1->vol;
+      }
       heap_add(heap_sec, vbox1);
     } else {
       free(vbox1);
       n_colors--;
     }
     if (vbox2) {
-      if (vbox2->vol > 1) {
-        vbox2->sort_param = vbox2->n_pix * vbox2->vol;
+      if (vbox2->n_pix > 0) {
+        if (vbox2->vol > 1) {
+          vbox2->sort_param = vbox2->n_pix * vbox2->vol;
+        }
+        heap_add(heap_sec, vbox2);
+        n_colors++;
+      } else {
+        free(vbox2);
       }
-      heap_add(heap_sec, vbox2);
-      n_colors++;
     }
     if (n_colors >= max_colors)
       break;
