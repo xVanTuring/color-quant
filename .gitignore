@@ -1,5 +1,7 @@
 build/*
 !build/.gitkeep
-js/node_modules
-js/*.rgb
+script/node_modules
+script/*.rgb
 .vs
+.ccls-cache
+compile_commands.json

@@ -1,6 +1,7 @@
 clone_folder: c:\projects\color-quant
 image:
 - Visual Studio 2017
+skip_non_tags: true
 configuration:
 - Release
 platform:
@@ -33,10 +34,10 @@ build:
   project: c:\projects\color-quant\build\QuantColor.sln
   parallel: true
 before_test:
-- cmd: cd test
+- cmd: cd ..\
 test_script:
 - cmd: |-
-      .\Release\TestQC.exe
+      .\build\test\Release\TestQC.exe
 cache: 
   - build
   - js\node_modules -> js\package.json

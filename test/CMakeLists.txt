@@ -4,18 +4,15 @@ WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/js
 )
 
 message("Generating Binary Test file")
+if (WIN32)
 execute_process(COMMAND powershell -c "node index.js"
-                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/js
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/script
                 )
-if(EXISTS "${CMAKE_SOURCE_DIR}/js/data.3.rgb")
-  configure_file(${CMAKE_SOURCE_DIR}/js/data.3.rgb ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-endif()
-if(EXISTS "${CMAKE_SOURCE_DIR}/js/data.4.rgb")
-  configure_file(${CMAKE_SOURCE_DIR}/js/data.4.rgb ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-endif()
-# if(EXISTS "${CMAKE_SOURCE_DIR}/js/small.3.rgb")
-#   configure_file(${CMAKE_SOURCE_DIR}/js/small.3.rgb ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-# endif()
+else()
+execute_process(COMMAND bash -c "node index.js"
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/script
+                )    
+endif ()
 add_executable(TestQC main.c)
 include_directories(../src)
 include_directories(../heap/src)
