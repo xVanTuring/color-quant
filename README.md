@@ -5,7 +5,7 @@
 ## Des
 A fast and light implementation of MMCQ, based on leptonica
 ## Node Version
-> dev
+[cquant: Async Node color quantization by native addon ](https://github.com/xVanTuring/cquant)
 ## Supported Format
 > as long as you can convert it to RGB/RGBA array, of course only 32bit and 24bit are support
 <br/>
