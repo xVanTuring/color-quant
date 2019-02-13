@@ -40,4 +40,4 @@ test_script:
       .\build\test\Release\TestQC.exe
 cache: 
   - build
-  - js\node_modules -> js\package.json
+  - script\node_modules -> script\package.json
