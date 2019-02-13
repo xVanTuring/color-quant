@@ -15,7 +15,7 @@ PIXCMAP *pix_cmap_create(int depth) {
 }
 
 int pix_cmap_add_color(PIXCMAP *cmap, int r_val, int g_val, int b_val,
-                       int count) {
+                       size_t count) {
   RGBC_QUAD *cta = cmap->array;
   cta[cmap->n].red = r_val;
   cta[cmap->n].green = g_val;
