@@ -1,7 +1,7 @@
 clone_folder: c:\projects\color-quant
 image:
 - Visual Studio 2017
-skip_non_tags: true
+# skip_non_tags: true
 configuration:
 - Release
 platform:
@@ -14,7 +14,6 @@ matrix:
 install:
     - ps: Install-Product node 8 x64
     - ps: node --version
-    - ps: git submodule -q update --init heap
 init:
 - set arch=
 - if "%arch%"=="Win64" ( set arch= Win64)
