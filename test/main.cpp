@@ -1,20 +1,22 @@
 #pragma warning(disable : 4996)
 #include "colorquant.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string>
 #include <sys/stat.h>
 #include <time.h>
-int file_size(char *filename);
-int run(char *filename, int depth);
+int file_size(const char *filename);
+int run(const char *filename, int depth);
 int main() {
-  char *filename4 = "./script/data.4.rgb";
-  char *filename3 = "./script/data.3.rgb";
+  std::string filename4 = "./script/data.4.rgb";
+  std::string filename3 = "./script/data.3.rgb";
   // on windows if you double click the exe,
   // make sure it's next to data.rgb
-  run(filename4, 4);
-  run(filename3, 3);
+  run(filename4.c_str(), 4);
+  run(filename3.c_str(), 3);
   return 0;
 }
-int run(char *filename, int depth) {
+int run(const char *filename, int depth) {
   printf("%s\n", filename);
   int f_size = file_size(filename) / 3;
   if (depth == 4) {
@@ -25,20 +27,20 @@ int run(char *filename, int depth) {
     return -1;
   }
   FILE *rgb_file = fopen(filename, "rb");
-  PIX *pix = malloc(sizeof(PIX));
+  PIX *pix = new PIX;
   void *rgb_list;
   if (depth == 3) {
-    rgb_list = malloc(f_size * sizeof(RGB_QUAD));
+    rgb_list = malloc(f_size * sizeof(RGB_Quad));
     if (rgb_list == NULL) {
       return -1;
     }
-    fread(rgb_list, sizeof(RGB_QUAD), f_size, rgb_file);
+    fread(rgb_list, sizeof(RGB_Quad), f_size, rgb_file);
   } else {
-    rgb_list = malloc(f_size * sizeof(RGBA_QUAD));
+    rgb_list = new RGBA_Quad[f_size];
     if (rgb_list == NULL) {
       return -1;
     }
-    fread(rgb_list, sizeof(RGBA_QUAD), f_size, rgb_file);
+    fread(rgb_list, sizeof(RGBA_Quad), f_size, rgb_file);
   }
   if (pix == NULL) {
     return -1;
@@ -68,7 +70,7 @@ int run(char *filename, int depth) {
   return 0;
 }
 
-int file_size(char *filename) {
+int file_size(const char *filename) {
   struct stat statbuf;
   stat(filename, &statbuf);
   const int size = statbuf.st_size;

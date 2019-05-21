@@ -17,8 +17,7 @@ else()
                     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/script
                     )
 endif ()
-add_executable(TestQC main.c)
+add_executable(TestQC main.cpp)
 include_directories(../src)
-include_directories(../heap/src)
 
 target_link_libraries(TestQC LibColorQuant)

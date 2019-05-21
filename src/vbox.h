@@ -1,6 +1,7 @@
 #ifndef VBOX_3D_H
-#define VBOX_3D_H
-#include <stddef.h>
+#define VBOX_3D_H 1
+#include <memory>
+#include <queue>
 struct Box3d {
   size_t sort_param; /* parameter on which to sort the vbox */
   size_t n_pix;      /* number of pixels in the vbox        */
@@ -13,21 +14,28 @@ struct Box3d {
   int b2;            /* max b index in the vbox             */
 };
 
-typedef struct Box3d BOX3D;
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern BOX3D *box_3d_create(int r1, int r2, int g1, int g2, int b1, int b2);
+// typedef struct Box3d BOX3D;
+class Compare {
+public:
+  bool operator()(std::shared_ptr<Box3d> b1, std::shared_ptr<Box3d> b2) {
+    return b1->sort_param <= b2->sort_param;
+    ;
+  }
+};
+typedef std::priority_queue<std::shared_ptr<Box3d>,
+                            std::vector<std::shared_ptr<Box3d>>, Compare>
+    Box3dHeap;
+std::shared_ptr<Box3d> box_3d_create(int r1, int r2, int g1, int g2, int b1,
+                                     int b2);
 
-extern BOX3D *box_3d_copy(BOX3D *vbox);
+std::shared_ptr<Box3d> box_3d_copy(std::shared_ptr<Box3d> vbox);
 
-extern size_t vbox_get_count(BOX3D *vbox, int *histo, int sigbits);
+size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int[]> histo,
+                      int sigbits);
 
-extern size_t vbox_get_volume(BOX3D *vbox);
-extern void vbox_get_average_color(BOX3D *vbox, int *histo, int sigbits,
-                                   int index, int *p_rval, int *p_gval,
-                                   int *p_bval);
-#ifdef __cplusplus
-}
-#endif
+size_t vbox_get_volume(std::shared_ptr<Box3d> vbox);
+void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
+                            std::shared_ptr<int[]> histo, int sigbits,
+                            int index, int *p_rval, int *p_gval, int *p_bval);
+
 #endif
