@@ -67,9 +67,10 @@ std::shared_ptr<PIXCMAP> histo_median_cut_quant(std::shared_ptr<int[]> histo,
         // heap_add(heap, vbox2);
         heap.push(vbox2);
         n_colors++;
-      } else {
-        // free(vbox2);
       }
+      // else {
+      //   // free(vbox2);
+      // }
     }
     if (n_colors >= pop_colors)
       break;
