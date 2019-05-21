@@ -36,6 +36,6 @@ size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int[]> histo,
 size_t vbox_get_volume(std::shared_ptr<Box3d> vbox);
 void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
                             std::shared_ptr<int[]> histo, int sigbits,
-                            int index, int *p_rval, int *p_gval, int *p_bval);
+                            int index, int &p_rval, int &p_gval, int &p_bval);
 
 #endif

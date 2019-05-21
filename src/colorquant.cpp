@@ -25,12 +25,10 @@
  *====================================================================*/
 
 #include "colorquant.h"
-#include <math.h>
-// #include <stdlib.h>
 
-PIXCMAP *histo_median_cut_quant(std::shared_ptr<int[]> histo,
-                                std::shared_ptr<Box3d> vbox, int max_colors,
-                                int sigbits) {
+std::shared_ptr<PIXCMAP> histo_median_cut_quant(std::shared_ptr<int[]> histo,
+                                                std::shared_ptr<Box3d> vbox,
+                                                int max_colors, int sigbits) {
   if (sigbits == 0) {
     sigbits = DEFAULT_SIG_BITS;
   }
@@ -84,7 +82,6 @@ PIXCMAP *histo_median_cut_quant(std::shared_ptr<int[]> histo,
     vbox = heap.top();
     heap.pop();
     vbox->sort_param = vbox->n_pix * vbox->vol;
-    // heap_add(heap_sec, vbox);
     heap_sec.push(vbox);
   }
   while (true) {
@@ -133,17 +130,14 @@ PIXCMAP *histo_median_cut_quant(std::shared_ptr<int[]> histo,
     vbox = heap_sec.top();
     heap_sec.pop();
     vbox->sort_param = vbox->n_pix;
-    // heap_add(heap, vbox);
     heap.push(vbox);
   }
-  // heap_destroy(&heap_sec, TRUE);
-  PIXCMAP *cmap = pix_cmap_generate_from_median_cuts(heap, histo, sigbits);
-  // heap_destroy(&heap, true);
-  // free(histo);
+  auto cmap = pix_cmap_generate_from_median_cuts(heap, histo, sigbits);
   return cmap;
 }
-PIXCMAP *pix_median_cut_quant(PIX *pix, int max_colors, int sigbits,
-                              int max_sub) {
+std::shared_ptr<PIXCMAP> pix_median_cut_quant(std::shared_ptr<PIX> pix,
+                                              int max_colors, int sigbits,
+                                              int max_sub) {
   if (pix->depth != 3 && pix->depth != 4) {
     return nullptr;
   }
@@ -185,8 +179,8 @@ PIXCMAP *pix_median_cut_quant(PIX *pix, int max_colors, int sigbits,
   }
   return histo_median_cut_quant(histo, vbox, max_colors, sigbits);
 }
-std::shared_ptr<int[]> pix_median_cut_histo(PIX *pix, int sigbits,
-                                            int sub_sample) {
+std::shared_ptr<int[]> pix_median_cut_histo(std::shared_ptr<PIX> pix,
+                                            int sigbits, int sub_sample) {
   const int histo_size = 1 << (3 * sigbits);
   auto histo = std::shared_ptr<int[]>(new int[histo_size]);
   if (histo == nullptr) {
@@ -201,7 +195,8 @@ std::shared_ptr<int[]> pix_median_cut_histo(PIX *pix, int sigbits,
   }
   return histo;
 }
-void get_color_index(PIX *pix, int i, int rshift, int sigbits, int *index) {
+void get_color_index(std::shared_ptr<PIX> pix, int i, int rshift, int sigbits,
+                     int *index) {
   int r;
   int g;
   int b;
@@ -218,8 +213,8 @@ void get_color_index(PIX *pix, int i, int rshift, int sigbits, int *index) {
   }
   *index = (r << (2 * sigbits)) + (g << sigbits) + b;
 }
-std::shared_ptr<Box3d> pix_get_color_region(PIX *pix, int sigbits,
-                                            int sub_sample) {
+std::shared_ptr<Box3d> pix_get_color_region(std::shared_ptr<PIX> pix,
+                                            int sigbits, int sub_sample) {
 
   int g_min, b_min, g_max, b_max;
 

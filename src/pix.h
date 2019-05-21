@@ -18,12 +18,12 @@ struct RGB_Quad {
   unsigned char blue;
 };
 
-
 struct RGBC_QUAD {
   unsigned char red;
   unsigned char green;
   unsigned char blue;
   size_t count;
+  RGBC_QUAD() {}
 };
 
 struct Pix {
@@ -35,7 +35,7 @@ struct Pix {
 typedef struct Pix PIX;
 
 struct PixColormap {
-  RGBC_QUAD *array; //
+  std::shared_ptr<RGBC_QUAD[]> array; //
   int depth;
   int n_alloc;
   int n;
@@ -43,10 +43,10 @@ struct PixColormap {
 
 typedef struct PixColormap PIXCMAP;
 
-PIXCMAP *pix_cmap_generate_from_median_cuts(Box3dHeap &heap,
-                                            std::shared_ptr<int[]> histo,
-                                            int sigbits);
-PIXCMAP *pix_cmap_create(int depth);
-int pix_cmap_add_color(PIXCMAP *cmap, int r_val, int g_val, int b_val,
-                       size_t count);
+std::shared_ptr<PIXCMAP>
+pix_cmap_generate_from_median_cuts(Box3dHeap &heap,
+                                   std::shared_ptr<int[]> histo, int sigbits);
+std::shared_ptr<PIXCMAP> pix_cmap_create(int depth);
+int pix_cmap_add_color(std::shared_ptr<PIXCMAP> cmap, int r_val, int g_val,
+                       int b_val, size_t count);
 #endif

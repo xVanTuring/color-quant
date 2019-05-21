@@ -45,8 +45,8 @@ size_t vbox_get_volume(std::shared_ptr<Box3d> vbox) {
 
 void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
                             std::shared_ptr<int[]> histo, int sigbits,
-                            int index, int *p_rval, int *p_gval, int *p_bval) {
-  *p_rval = *p_gval = *p_bval = 0;
+                            int index, int &p_rval, int &p_gval, int &p_bval) {
+  p_rval = p_gval = p_bval = 0;
   int n_total = 0;
   const int multiple = 1 << (8 - sigbits);
   int r_sum, g_sum, b_sum;
@@ -66,12 +66,12 @@ void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
     }
   }
   if (n_total == 0) {
-    *p_rval = multiple * (vbox->r1 + vbox->r2 + 1) / 2;
-    *p_gval = multiple * (vbox->g1 + vbox->g2 + 1) / 2;
-    *p_bval = multiple * (vbox->b1 + vbox->b2 + 1) / 2;
+    p_rval = multiple * (vbox->r1 + vbox->r2 + 1) / 2;
+    p_gval = multiple * (vbox->g1 + vbox->g2 + 1) / 2;
+    p_bval = multiple * (vbox->b1 + vbox->b2 + 1) / 2;
   } else {
-    *p_rval = r_sum / n_total;
-    *p_gval = g_sum / n_total;
-    *p_bval = b_sum / n_total;
+    p_rval = r_sum / n_total;
+    p_gval = g_sum / n_total;
+    p_bval = b_sum / n_total;
   }
 }
