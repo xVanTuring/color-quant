@@ -1,0 +1,35 @@
+language: c++
+compiler:
+  - clang
+matrix:
+  include:
+    - name: "OS X "
+      os: osx
+      osx_image: xcode10.1
+      language: node_js
+      node_js: "11"
+      sudo: true
+    - name: "Linux"
+      os: linux
+      dist: xenial
+      sudo: true
+      language: node_js
+      node_js: "11"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env:
+        - CC="gcc-8"
+        - CXX="g++-8"
+install:
+  - echo "add_subdirectory(test)" >> CMakeLists.txt
+before_script:
+  - cd build
+  - cmake ..
+  - make
+script:
+  - cd ../
+  - ./build/test/TestQC
