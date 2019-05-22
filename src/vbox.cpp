@@ -20,14 +20,14 @@ std::shared_ptr<Box3d> box_3d_copy(std::shared_ptr<Box3d> vbox) {
   return vbox_clone;
 }
 
-size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int[]> histo,
+size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int> histo,
                       int sigbits) {
   size_t n_pix = 0;
   for (int r = vbox->r1; r <= vbox->r2; ++r) {
     for (int g = vbox->g1; g <= vbox->g2; ++g) {
       for (int b = vbox->b1; b <= vbox->b2; ++b) {
         const int index = (r << (2 * sigbits)) + (g << sigbits) + b;
-        n_pix += histo[index];
+        n_pix += histo.get()[index];
       }
     }
   }
@@ -44,7 +44,7 @@ size_t vbox_get_volume(std::shared_ptr<Box3d> vbox) {
 }
 
 void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
-                            std::shared_ptr<int[]> histo, int sigbits,
+                            std::shared_ptr<int> histo, int sigbits,
                             int index, int &p_rval, int &p_gval, int &p_bval) {
   p_rval = p_gval = p_bval = 0;
   int n_total = 0;
@@ -55,12 +55,12 @@ void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
     for (int g = vbox->g1; g <= vbox->g2; ++g) {
       for (int b = vbox->b1; b <= vbox->b2; ++b) {
         const int histo_index = (r << 2 * sigbits) + (g << sigbits) + b;
-        n_total += histo[histo_index];
-        r_sum += (int)(histo[histo_index] * (r + 0.5) * multiple);
-        g_sum += (int)(histo[histo_index] * (g + 0.5) * multiple);
-        b_sum += (int)(histo[histo_index] * (b + 0.5) * multiple);
+        n_total += histo.get()[histo_index];
+        r_sum += (int)(histo.get()[histo_index] * (r + 0.5) * multiple);
+        g_sum += (int)(histo.get()[histo_index] * (g + 0.5) * multiple);
+        b_sum += (int)(histo.get()[histo_index] * (b + 0.5) * multiple);
         if (index >= 0) {
-          histo[histo_index] = index;
+          histo.get()[histo_index] = index;
         }
       }
     }

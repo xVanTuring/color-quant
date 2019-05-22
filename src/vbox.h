@@ -30,12 +30,12 @@ std::shared_ptr<Box3d> box_3d_create(int r1, int r2, int g1, int g2, int b1,
 
 std::shared_ptr<Box3d> box_3d_copy(std::shared_ptr<Box3d> vbox);
 
-size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int[]> histo,
+size_t vbox_get_count(std::shared_ptr<Box3d> vbox, std::shared_ptr<int> histo,
                       int sigbits);
 
 size_t vbox_get_volume(std::shared_ptr<Box3d> vbox);
 void vbox_get_average_color(std::shared_ptr<Box3d> vbox,
-                            std::shared_ptr<int[]> histo, int sigbits,
+                            std::shared_ptr<int> histo, int sigbits,
                             int index, int &p_rval, int &p_gval, int &p_bval);
 
 #endif

@@ -45,7 +45,7 @@ typedef struct PixColormap PIXCMAP;
 
 std::shared_ptr<PIXCMAP>
 pix_cmap_generate_from_median_cuts(Box3dHeap &heap,
-                                   std::shared_ptr<int[]> histo, int sigbits);
+                                   std::shared_ptr<int> histo, int sigbits);
 std::shared_ptr<PIXCMAP> pix_cmap_create(int depth);
 int pix_cmap_add_color(std::shared_ptr<PIXCMAP> cmap, int r_val, int g_val,
                        int b_val, size_t count);

@@ -28,7 +28,7 @@ int pix_cmap_add_color(std::shared_ptr<PIXCMAP> cmap, int r_val, int g_val,
 
 std::shared_ptr<PIXCMAP>
 pix_cmap_generate_from_median_cuts(Box3dHeap &heap,
-                                   std::shared_ptr<int[]> histo, int sigbits) {
+                                   std::shared_ptr<int> histo, int sigbits) {
   int r, g, b;
   r = g = b = 0;
   auto cmap = pix_cmap_create(8);

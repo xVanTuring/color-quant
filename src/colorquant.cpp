@@ -26,7 +26,7 @@
 
 #include "colorquant.h"
 
-std::shared_ptr<PIXCMAP> histo_median_cut_quant(std::shared_ptr<int[]> histo,
+std::shared_ptr<PIXCMAP> histo_median_cut_quant(std::shared_ptr<int> histo,
                                                 std::shared_ptr<Box3d> vbox,
                                                 int max_colors, int sigbits) {
   if (sigbits == 0) {
@@ -159,7 +159,7 @@ std::shared_ptr<PIXCMAP> pix_median_cut_quant(std::shared_ptr<PIX> pix,
   bool smalln = true;
   int ncolors = 0;
   for (int i = 0; i < histosize; i++) {
-    if (histo[i]) {
+    if (histo.get()[i]) {
       ncolors++;
     }
     if (ncolors > max_colors) {
@@ -179,10 +179,11 @@ std::shared_ptr<PIXCMAP> pix_median_cut_quant(std::shared_ptr<PIX> pix,
   }
   return histo_median_cut_quant(histo, vbox, max_colors, sigbits);
 }
-std::shared_ptr<int[]> pix_median_cut_histo(std::shared_ptr<PIX> pix,
-                                            int sigbits, int sub_sample) {
+std::shared_ptr<int> pix_median_cut_histo(std::shared_ptr<PIX> pix, int sigbits,
+                                          int sub_sample) {
   const int histo_size = 1 << (3 * sigbits);
-  std::shared_ptr<int[]> histo(new int[histo_size]());
+  std::shared_ptr<int> histo(new int[histo_size](),
+                             std::default_delete<int[]>());
   if (histo == nullptr) {
     return nullptr;
   }
@@ -191,7 +192,7 @@ std::shared_ptr<int[]> pix_median_cut_histo(std::shared_ptr<PIX> pix,
   int index;
   for (int i = 0; i < num; i += sub_sample) {
     get_color_index(pix, i, rshift, sigbits, &index);
-    histo[index]++;
+    histo.get()[index]++;
   }
   return histo;
 }
@@ -256,7 +257,7 @@ std::shared_ptr<Box3d> pix_get_color_region(std::shared_ptr<PIX> pix,
   }
   return box_3d_create(r_min, r_max, g_min, g_max, b_min, b_max);
 }
-int median_cut_apply(std::shared_ptr<int[]> histo, int sigbits,
+int median_cut_apply(std::shared_ptr<int> histo, int sigbits,
                      std::shared_ptr<Box3d> vbox,
                      std::shared_ptr<Box3d> &pvbox1,
                      std::shared_ptr<Box3d> &pvbox2) {
@@ -288,7 +289,7 @@ int median_cut_apply(std::shared_ptr<int[]> histo, int sigbits,
       for (j = vbox->g1; j <= vbox->g2; j++) {
         for (k = vbox->b1; k <= vbox->b2; k++) {
           index = (i << (2 * sigbits)) + (j << sigbits) + k;
-          sum += histo[index];
+          sum += histo.get()[index];
         }
       }
       total += sum;
@@ -300,7 +301,7 @@ int median_cut_apply(std::shared_ptr<int[]> histo, int sigbits,
       for (j = vbox->r1; j <= vbox->r2; j++) {
         for (k = vbox->b1; k <= vbox->b2; k++) {
           index = (i << sigbits) + (j << (2 * sigbits)) + k;
-          sum += histo[index];
+          sum += histo.get()[index];
         }
       }
       total += sum;
@@ -313,7 +314,7 @@ int median_cut_apply(std::shared_ptr<int[]> histo, int sigbits,
       for (j = vbox->r1; j <= vbox->r2; j++) {
         for (k = vbox->g1; k <= vbox->g2; k++) {
           index = i + (j << (2 * sigbits)) + (k << sigbits);
-          sum += histo[index];
+          sum += histo.get()[index];
         }
       }
       total += sum;
