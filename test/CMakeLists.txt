@@ -18,6 +18,11 @@ else()
                     )
 endif ()
 add_executable(TestQC main.cpp)
+set_target_properties(TestQC
+PROPERTIES CXX_STANDARD 17
+)
+
 include_directories(../src)
+
 
 target_link_libraries(TestQC LibColorQuant)
