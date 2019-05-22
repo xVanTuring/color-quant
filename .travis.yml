@@ -27,9 +27,7 @@ matrix:
 install:
   - echo "add_subdirectory(test)" >> CMakeLists.txt
 before_script:
-  - cd build
-  - cmake ..
-  - make
+  - cmake -H. -Bbuild
+  - cmake --build ./build
 script:
-  - cd ../
   - ./build/test/TestQC
