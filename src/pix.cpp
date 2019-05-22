@@ -3,23 +3,25 @@
 
 std::shared_ptr<PIXCMAP> pix_cmap_create(int depth) {
   std::shared_ptr<PIXCMAP> cmap = std::make_shared<PIXCMAP>();
-  if (cmap == NULL) {
-    return NULL;
+  if (cmap == nullptr) {
+    return nullptr;
   }
   cmap->depth = depth;
   cmap->n_alloc = 1 << depth;
-  cmap->array = std::shared_ptr<RGBC_QUAD[]>(new RGBC_QUAD[cmap->n_alloc]);
+  cmap->array = std::make_shared<std::vector<std::shared_ptr<RGBC_QUAD>>>();
   cmap->n = 0;
   return cmap;
 }
 
 int pix_cmap_add_color(std::shared_ptr<PIXCMAP> cmap, int r_val, int g_val,
                        int b_val, size_t count) {
-  auto cta = cmap->array;
-  cta[cmap->n].red = r_val;
-  cta[cmap->n].green = g_val;
-  cta[cmap->n].blue = b_val;
-  cta[cmap->n].count = count;
+  auto item = std::make_shared<RGBC_QUAD>();
+  // auto cta = cmap->array;
+  item->red = r_val;
+  item->green = g_val;
+  item->blue = b_val;
+  item->count = count;
+  cmap->array->push_back(item);
   cmap->n++;
   return 0;
 }

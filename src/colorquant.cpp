@@ -153,7 +153,6 @@ std::shared_ptr<PIXCMAP> pix_median_cut_quant(std::shared_ptr<PIX> pix,
     sub_sample = (int)(pix->n / 1000000.);
     sub_sample = std::max(1, std::min(max_sub, sub_sample));
   }
-  // printf("%d\n", sub_sample);
   auto histo = pix_median_cut_histo(pix, sigbits, sub_sample);
 
   const int histosize = 1 << (3 * sigbits);
@@ -169,21 +168,21 @@ std::shared_ptr<PIXCMAP> pix_median_cut_quant(std::shared_ptr<PIX> pix,
     }
   }
   if (smalln) {
-    return NULL;
+    return nullptr;
   }
 
   std::shared_ptr<Box3d> vbox = pix_get_color_region(pix, sigbits, sub_sample);
   vbox->n_pix = vbox_get_count(vbox, histo, sigbits);
   vbox->vol = vbox_get_volume(vbox);
-  if (histo == NULL || vbox == NULL) {
-    return NULL;
+  if (histo == nullptr || vbox == nullptr) {
+    return nullptr;
   }
   return histo_median_cut_quant(histo, vbox, max_colors, sigbits);
 }
 std::shared_ptr<int[]> pix_median_cut_histo(std::shared_ptr<PIX> pix,
                                             int sigbits, int sub_sample) {
   const int histo_size = 1 << (3 * sigbits);
-  auto histo = std::shared_ptr<int[]>(new int[histo_size]);
+  std::shared_ptr<int[]> histo(new int[histo_size]());
   if (histo == nullptr) {
     return nullptr;
   }
@@ -268,7 +267,7 @@ int median_cut_apply(std::shared_ptr<int[]> histo, int sigbits,
   if (vbox_get_count(vbox, histo, sigbits) == 0) {
     return 1;
   }
-  if (vbox == NULL) {
+  if (vbox == nullptr) {
     return 1;
   }
   const int rw = vbox->r2 - vbox->r1 + 1;

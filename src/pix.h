@@ -3,6 +3,7 @@
 #include "vbox.h"
 #include <memory>
 #include <queue>
+#include <vector>
 struct RGBA_Quad {
   unsigned char red;
   unsigned char green;
@@ -23,7 +24,6 @@ struct RGBC_QUAD {
   unsigned char green;
   unsigned char blue;
   size_t count;
-  RGBC_QUAD() {}
 };
 
 struct Pix {
@@ -35,7 +35,7 @@ struct Pix {
 typedef struct Pix PIX;
 
 struct PixColormap {
-  std::shared_ptr<RGBC_QUAD[]> array; //
+  std::shared_ptr<std::vector<std::shared_ptr<RGBC_QUAD>>> array;
   int depth;
   int n_alloc;
   int n;

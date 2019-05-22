@@ -30,18 +30,18 @@ int run(std::string filename, int depth) {
   void *rgb_list;
   if (depth == 3) {
     rgb_list = malloc(f_size * sizeof(RGB_Quad));
-    if (rgb_list == NULL) {
+    if (rgb_list == nullptr) {
       return -1;
     }
     fread(rgb_list, sizeof(RGB_Quad), f_size, rgb_file);
   } else {
     rgb_list = new RGBA_Quad[f_size];
-    if (rgb_list == NULL) {
+    if (rgb_list == nullptr) {
       return -1;
     }
     fread(rgb_list, sizeof(RGBA_Quad), f_size, rgb_file);
   }
-  if (pix == NULL) {
+  if (pix == nullptr) {
     return -1;
   }
   pix->pixs = rgb_list;
@@ -52,14 +52,14 @@ int run(std::string filename, int depth) {
   std::shared_ptr<PIXCMAP> cmap = pix_median_cut_quant(pix, max_color, 5, 0);
   const clock_t end = clock();
   printf("time=%f ms\n", ((double)end - start) / CLOCKS_PER_SEC * 1000);
-  if (cmap == NULL) {
+  if (cmap == nullptr) {
     return -1;
   }
-  auto colorMapArray = cmap->array;
-  for (int i = 0; i < cmap->n; i++) {
-    printf("rgb(%d, %d, %d) %lu \n", colorMapArray[i].red,
-           colorMapArray[i].green, colorMapArray[i].blue,
-           colorMapArray[i].count);
+  auto colorMapArray =
+      cmap->array;
+  for (auto &item : (*colorMapArray)) {
+    printf("rgb(%d, %d, %d) %lu \n", item->red, item->green, item->blue,
+           item->count);
   }
   fclose(rgb_file);
   free(pix->pixs);
