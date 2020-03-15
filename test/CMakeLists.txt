@@ -1,6 +1,6 @@
 if (WIN32)
     message("installing node deps")
-    execute_process(COMMAND powershell -c "npm install"
+    execute_process(COMMAND powershell -c "yarn"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/script
     )
     message("Generating Binary Test file")
@@ -9,7 +9,7 @@ if (WIN32)
                     )
 else()
     message("installing node deps")
-    execute_process(COMMAND bash -c "npm install"
+    execute_process(COMMAND bash -c "yarn"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/script
     )
     message("Generating Binary Test file")
